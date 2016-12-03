@@ -35,9 +35,10 @@ window.addEventListener('resize', (evt) => {
 
 })
 
-if (navigator.getUserMedia) {
+if (navigator.mediaDevices.getUserMedia) {
   console.log('getUserMedia supported.')
-  navigator.getUserMedia({ audio: true },
+  navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(
     (stream) => {
       const source = audioCtx.createMediaStreamSource(stream)
       source.connect(analyser)
