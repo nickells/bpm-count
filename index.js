@@ -3,15 +3,22 @@ const thresholdDOM = document.getElementById('threshold')
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 const analyser = audioCtx.createAnalyser()
 analyser.fftSize = 2048
-analyser.smoothingTimeConstant = 1;
+analyser.smoothingTimeConstant = 1
 
 const bufferLength = analyser.frequencyBinCount
 const dataArray = new Uint8Array(bufferLength)
 
-const WIDTH = 100
-const HEIGHT = 100
+let WIDTH = window.innerWidth
+const HEIGHT = 256
 
 const canvas = document.getElementById('canvas')
+canvas.style['cursor'] = 'row-resize'
+document.body.style['padding'] = 0
+document.body.style['margin'] = 0
+document.getElementById('info').style['padding'] = '10px'
+
+canvas.setAttribute('width', WIDTH)
+canvas.setAttribute('height', HEIGHT)
 const canvasCtx = canvas.getContext('2d')
 let canvasLineHeight = 0
 let threshold = 200
@@ -20,6 +27,12 @@ canvas.addEventListener('mousemove', (evt) => {
   const mousePos = getMousePos(canvas, evt)
   const { y } = mousePos
   canvasLineHeight = y
+})
+
+window.addEventListener('resize', (evt) => {
+  WIDTH = window.innerWidth
+  canvas.setAttribute('width', WIDTH)
+
 })
 
 if (navigator.getUserMedia) {
@@ -51,6 +64,10 @@ function analyze (timer) {
   getAmplitude(timer)
 }
 
+function bpmToMilliseconds (bpm) {
+  return 60000 / bpm
+}
+
 function millisecondsToBpm (ms) {
   return 60000 / ms
 }
@@ -60,7 +77,7 @@ function getBeatsPerMinute () {
   return {
     tick: function () {
       const delay = new Date() - time
-      if (delay < 200) return // debounce
+      if (delay < bpmToMilliseconds(300)) return // debounce
       time = new Date()
       output.innerHTML = millisecondsToBpm(delay)
     }
@@ -86,7 +103,7 @@ function drawWave () {
 
   for (let i = 0; i < bufferLength; i++) {
     const v = dataArray[i] / 128.0
-    const y = (v * HEIGHT / 2) + 50
+    const y = (v * HEIGHT / 2) + HEIGHT / 2
     if (i === 0) {
       canvasCtx.moveTo(x, y)
     } else {
@@ -110,13 +127,14 @@ function getMousePos (canvas, evt) {
 
 function updateThreshold (y) {
   drawLine(y)
-  const relativeHeight = 100 - y
-  threshold = ((relativeHeight / 100) * 256) + 128
+  const relativeHeight = HEIGHT - y
+  threshold = ((relativeHeight / HEIGHT) * 256) + 128
   thresholdDOM.innerHTML = threshold
 }
 
 function drawLine (y) {
   canvasCtx.beginPath()
+  canvasCtx.strokeStyle = 'red'
   canvasCtx.moveTo(0, y)
   canvasCtx.lineTo(WIDTH, y)
   canvasCtx.stroke()
