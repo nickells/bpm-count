@@ -32,7 +32,6 @@ canvas.addEventListener('mousemove', (evt) => {
 window.addEventListener('resize', (evt) => {
   WIDTH = window.innerWidth
   canvas.setAttribute('width', WIDTH)
-
 })
 
 if (navigator.mediaDevices.getUserMedia) {
@@ -75,12 +74,16 @@ function millisecondsToBpm (ms) {
 
 function getBeatsPerMinute () {
   let time = new Date()
+  let bpm
+  let set = new LimitedArray(10)
   return {
     tick: function () {
       const delay = new Date() - time
       if (delay < bpmToMilliseconds(300)) return // debounce
       time = new Date()
-      output.innerHTML = millisecondsToBpm(delay)
+      set.add(millisecondsToBpm(delay))
+      bpm = set.getAverage()
+      output.innerHTML = bpm
     }
   }
 }
@@ -141,3 +144,21 @@ function drawLine (y) {
   canvasCtx.stroke()
 }
 
+function LimitedArray (size) {
+  let data = new Uint8Array(size)
+  return {
+    add: function (num) {
+      for (let i = 1; i < size; i++) {
+        data[i - 1] = data[i]
+      }
+      data[size - 1] = num
+      return data
+    },
+    getData: function () {
+      return data
+    },
+    getAverage: function () {
+      return data.reduce((total, number) => total + number, 0) / size
+    }
+  }
+}
