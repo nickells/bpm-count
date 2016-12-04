@@ -23,11 +23,14 @@ const canvasCtx = canvas.getContext('2d')
 let canvasLineHeight = 0
 let threshold = 200
 
-canvas.addEventListener('mousemove', (evt) => {
+function mouseHandler (evt) {
   const mousePos = getMousePos(canvas, evt)
   const { y } = mousePos
   canvasLineHeight = y
-})
+}
+
+canvas.addEventListener('mousemove', mouseHandler)
+canvas.addEventListener('touchmove', mouseHandler)
 
 window.addEventListener('resize', (evt) => {
   WIDTH = window.innerWidth
@@ -75,7 +78,7 @@ function millisecondsToBpm (ms) {
 function getBeatsPerMinute () {
   let time = new Date()
   let bpm
-  let set = new LimitedArray(10)
+  let set = new LimitedArray(6)
   return {
     tick: function () {
       const delay = new Date() - time
