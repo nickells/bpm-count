@@ -16,6 +16,18 @@
       <div id="threshold"></div>
     </div>
   </div>
+  <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDPVSAqPXYzLD501USJ-peeMDL8fzEMPY4",
+      authDomain: "bpm-count.firebaseapp.com",
+      databaseURL: "https://bpm-count.firebaseio.com",
+      storageBucket: "bpm-count.appspot.com",
+      messagingSenderId: "345240134098"
+    };
+    firebase.initializeApp(config);
+  </script>
   <script src="state.js"/></script>
   <script src="utils.js"/></script>
   <script src="index.js"/></script>

@@ -57,7 +57,6 @@ function canvasController () {
       canvasCtx.stroke()
     },
     drawLine: function (y) {
-      console.log('drawing', y)
       canvasCtx.beginPath()
       canvasCtx.strokeStyle = 'red'
       canvasCtx.moveTo(0, y)
