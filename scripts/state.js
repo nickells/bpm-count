@@ -4,3 +4,7 @@ const state = {
   canvasLineHeight: 0,
   threshold: 200
 }
+
+export {
+  state
+}

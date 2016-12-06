@@ -1,3 +1,19 @@
+import {
+  getBeatsPerMinute
+} from './utils'
+import {
+  waveAnimation
+} from './canvasController'
+import { state } from './state'
+import { thresholdDOM, outputDOM } from './domElements'
+
+function updateThreshold (y) {
+  waveAnimation.drawLine(y)
+  const relativeHeight = state.height - y
+  state.threshold = ((relativeHeight / state.height) * 256) + 128
+  thresholdDOM.innerHTML = state.threshold
+}
+
 function audioController () {
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
   const analyser = audioCtx.createAnalyser()
@@ -14,6 +30,7 @@ function audioController () {
 
     // copies waveform data into array
     analyser.getByteTimeDomainData(dataArray)
+    console.log('canvas', canvas)
     canvas.drawWave()
     updateThreshold(state.canvasLineHeight)
     getAmplitude(timer)
@@ -31,6 +48,7 @@ function audioController () {
             const source = audioCtx.createMediaStreamSource(stream)
             source.connect(analyser)
             const timer = getBeatsPerMinute()
+            console.log('wave animaiton', waveAnimation)
             analyze(timer, waveAnimation)
           },
           (err) => {
@@ -43,5 +61,17 @@ function audioController () {
     }
   }
 }
+
+function getAmplitude (timer) {
+  const max = Math.max.apply(null, audio.dataArray)
+  if (max > state.threshold) {
+    timer.tick(outputDOM)
+  }
+}
+
 const audio = audioController()
 audio.init()
+
+export {
+  audio
+}

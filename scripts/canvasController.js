@@ -1,4 +1,7 @@
-function canvasController () {
+import { state } from './state'
+import { audio } from './audioController'
+
+const canvasController = () => {
   const canvas = document.getElementById('canvas')
   canvas.style['cursor'] = 'row-resize'
   document.body.style['padding'] = 0
@@ -67,3 +70,7 @@ function canvasController () {
 }
 
 const waveAnimation = canvasController()
+
+export {
+  waveAnimation
+}
