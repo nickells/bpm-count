@@ -4,10 +4,6 @@ import { audio } from './audioController'
 const canvasController = () => {
   const canvas = document.getElementById('canvas')
   canvas.style['cursor'] = 'row-resize'
-  document.body.style['padding'] = 0
-  document.body.style['margin'] = 0
-  document.getElementById('info').style['padding'] = '10px'
-
   canvas.setAttribute('width', state.width)
   canvas.setAttribute('height', state.height)
   const canvasCtx = canvas.getContext('2d')

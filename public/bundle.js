@@ -37,7 +37,6 @@ function audioController() {
 
     // copies waveform data into array
     analyser.getByteTimeDomainData(dataArray);
-    console.log('canvas', canvas);
     canvas.drawWave();
     updateThreshold(_state.state.canvasLineHeight);
     getAmplitude(timer);
@@ -92,10 +91,6 @@ var _audioController = require('./audioController');
 var canvasController = function canvasController() {
   var canvas = document.getElementById('canvas');
   canvas.style['cursor'] = 'row-resize';
-  document.body.style['padding'] = 0;
-  document.body.style['margin'] = 0;
-  document.getElementById('info').style['padding'] = '10px';
-
   canvas.setAttribute('width', _state.state.width);
   canvas.setAttribute('height', _state.state.height);
   var canvasCtx = canvas.getContext('2d');
@@ -170,6 +165,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 var outputDOM = document.getElementById('output');
 var thresholdDOM = document.getElementById('threshold');
+
+document.body.style['padding'] = 0;
+document.body.style['margin'] = 0;
+document.getElementById('info').style['padding'] = '10px';
 
 exports.outputDOM = outputDOM;
 exports.thresholdDOM = thresholdDOM;

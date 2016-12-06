@@ -30,7 +30,6 @@ function audioController () {
 
     // copies waveform data into array
     analyser.getByteTimeDomainData(dataArray)
-    console.log('canvas', canvas)
     canvas.drawWave()
     updateThreshold(state.canvasLineHeight)
     getAmplitude(timer)
