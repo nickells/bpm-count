@@ -218,14 +218,21 @@ function millisecondsToBpm(ms) {
   return 60000 / ms;
 }
 
-function LimitedArray(size) {
-  var data = new Uint8Array(size);
+function LimitedArray() {
+  var limit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 6;
+
+  var data = [];
   return {
     add: function add(num) {
-      for (var i = 1; i < size; i++) {
-        data[i - 1] = data[i];
+      if (data.length < limit) {
+        data.push(num);
+      } else {
+        for (var i = 1; i <= limit; i++) {
+          data[i - 1] = data[i];
+        }
+        data[limit - 1] = num;
       }
-      data[size - 1] = num;
+      console.log(data);
       return data;
     },
     getData: function getData() {
@@ -234,7 +241,7 @@ function LimitedArray(size) {
     getAverage: function getAverage() {
       return data.reduce(function (total, number) {
         return total + number;
-      }, 0) / size;
+      }, 0) / data.length;
     }
   };
 }

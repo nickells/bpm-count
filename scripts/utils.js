@@ -22,21 +22,25 @@ function millisecondsToBpm (ms) {
   return 60000 / ms
 }
 
-function LimitedArray (size) {
-  let data = new Uint8Array(size)
+function LimitedArray (limit = 6) {
+  let data = []
   return {
     add: function (num) {
-      for (let i = 1; i < size; i++) {
-        data[i - 1] = data[i]
+      if (data.length < limit) {
+        data.push(num)
+      } else {
+        for (let i = 1; i <= limit; i++) {
+          data[i - 1] = data[i]
+        }
+        data[limit - 1] = num
       }
-      data[size - 1] = num
       return data
     },
     getData: function () {
       return data
     },
     getAverage: function () {
-      return data.reduce((total, number) => total + number, 0) / size
+      return data.reduce((total, number) => total + number, 0) / data.length
     }
   }
 }
