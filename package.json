@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "sh build.sh && http-server"
+    "start": "sh build.sh && http-server",
+    "deploy": "firebase deploy"
   },
   "author": "",
   "license": "ISC",
